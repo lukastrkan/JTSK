@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="JTSK.Views.SettingsPage"
+             Title="Nastavení">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="save" Text="Uložit" Clicked="save_Clicked"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Email"></Label>
+            <Entry x:Name="emailEntry" Keyboard="Email" Placeholder="Email"></Entry>
+            <Label Text="URL"></Label>
+            <Entry x:Name="urlEntry" Keyboard="Url" Placeholder="URL"></Entry>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
