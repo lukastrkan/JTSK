@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace JTSK.Models
+﻿namespace JTSK.Models
 {
     public class Coordinate
     {
@@ -12,7 +8,7 @@ namespace JTSK.Models
         public string Display { get; set; }
 
         public Coordinate(double latitude, double longitude, string display)
-        {            
+        {
             this.Latitude = latitude;
             this.Longitude = longitude;
             this.Display = display;

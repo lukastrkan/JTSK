@@ -1,8 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using JTSK.Models;
+﻿using JTSK.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace JTSK
 {

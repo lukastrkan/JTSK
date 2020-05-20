@@ -1,9 +1,5 @@
 ﻿using Acr.UserDialogs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -17,8 +13,8 @@ namespace JTSK.Views
         public SettingsPage(bool setup = false)
         {
             InitializeComponent();
-            _setup = setup;     
-            if(Application.Current.Properties.ContainsKey("email"))
+            _setup = setup;
+            if (Application.Current.Properties.ContainsKey("email"))
             {
                 emailEntry.Text = (string)Application.Current.Properties["email"];
             }
@@ -41,10 +37,10 @@ namespace JTSK.Views
             }
             await Application.Current.SavePropertiesAsync();
             UserDialogs.Instance.Toast("Uloženo!");
-            if(_setup)
+            if (_setup)
             {
                 await Navigation.PopModalAsync();
-            }           
+            }
         }
     }
 }

@@ -1,15 +1,12 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using JTSK.Views;
-using Microsoft.EntityFrameworkCore;
-using Xamarin.Essentials;
+﻿using JTSK.Views;
 using System.IO;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace JTSK
 {
     public partial class App : Application
-    {        
+    {
         public static ApplicationDbContext _context;
         public App()
         {
