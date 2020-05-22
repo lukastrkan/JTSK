@@ -1,5 +1,7 @@
 ﻿using Acr.UserDialogs;
 using JTSK.Models;
+using JTSK.Services;
+using Microsoft.AppCenter.Crashes;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -17,11 +19,13 @@ namespace JTSK.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
     {
+        readonly ConfigService _configService;
         ObservableCollection<Coordinate> souradnice = new ObservableCollection<Coordinate>();
         public MainPage()
         {
             InitializeComponent();
-            if (!Application.Current.Properties.ContainsKey("email") || !Application.Current.Properties.ContainsKey("url"))
+            _configService = DependencyService.Resolve<ConfigService>();
+            if (!_configService.Exists)
             {
                 Navigation.PushModalAsync(new NavigationPage(new SettingsPage(true)));
             }
@@ -70,6 +74,7 @@ namespace JTSK.Views
             }
             catch (Exception ex)
             {
+                Crashes.TrackError(ex);
                 UserDialogs.Instance.Toast("Někde se stala chyba");
             }
             UserDialogs.Instance.HideLoading();
@@ -103,10 +108,10 @@ namespace JTSK.Views
                 UserDialogs.Instance.ShowLoading("Převádím...");
                 var cords = App._context.Coordinates.OrderBy(x => x.Id).Select(x => new { x.Display, x.Latitude, x.Longitude }).ToList();
                 string json = JsonConvert.SerializeObject(cords);
-                var client = new TinyRestClient(new HttpClient(), (string)Application.Current.Properties["url"]);
+                var client = new TinyRestClient(new HttpClient(), _configService.Config.Url);
                 var response = await client.PostRequest("api.php")
                     .AddFormParameter("gps", json)
-                    .AddFormParameter("email", (string)Application.Current.Properties["email"])
+                    .AddFormParameter("email", _configService.Config.Email)
                     .ExecuteAsHttpResponseMessageAsync();
                 UserDialogs.Instance.HideLoading();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -120,6 +125,7 @@ namespace JTSK.Views
             }
             catch (Exception ex)
             {
+                Crashes.TrackError(ex);
                 UserDialogs.Instance.HideLoading();
                 UserDialogs.Instance.Toast("Chyba");
             }

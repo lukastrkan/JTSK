@@ -1,4 +1,8 @@
-﻿using JTSK.Views;
+﻿using JTSK.Services;
+using JTSK.Views;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using System.IO;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -12,6 +16,8 @@ namespace JTSK
         {
             _context = new ApplicationDbContext(Path.Combine(FileSystem.AppDataDirectory, "jtsk.db"));
             _context.Database.EnsureCreated();
+            DependencyService.RegisterSingleton(_context);
+            DependencyService.RegisterSingleton(new ConfigService());
             InitializeComponent();
             MainPage = new NavigationPage(new MainPage());
         }
@@ -19,6 +25,7 @@ namespace JTSK
         protected override void OnStart()
         {
             // Handle when your app starts
+            AppCenter.Start("android=f5e9e88c-5220-4862-a426-f58d0b2e2d1f;", typeof(Analytics), typeof(Crashes));
         }
 
         protected override void OnSleep()

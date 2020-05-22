@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using JTSK.Services;
 using System;
 
 using Xamarin.Forms;
@@ -10,32 +11,22 @@ namespace JTSK.Views
     public partial class SettingsPage : ContentPage
     {
         bool _setup;
+        readonly ConfigService _configService;
         public SettingsPage(bool setup = false)
         {
             InitializeComponent();
+            _configService = DependencyService.Resolve<ConfigService>();
             _setup = setup;
-            if (Application.Current.Properties.ContainsKey("email"))
+            if (_configService.Exists)
             {
-                emailEntry.Text = (string)Application.Current.Properties["email"];
-            }
-            if (Application.Current.Properties.ContainsKey("url"))
-            {
-                urlEntry.Text = (string)Application.Current.Properties["url"];
+                emailEntry.Text = _configService.Config.Email;
+                urlEntry.Text = _configService.Config.Url;
             }
         }
 
         private async void save_Clicked(object sender, EventArgs e)
         {
-            Application.Current.Properties["email"] = emailEntry.Text;
-            if (!urlEntry.Text.Contains("http://"))
-            {
-                Application.Current.Properties["url"] = "http://" + urlEntry.Text;
-            }
-            else
-            {
-                Application.Current.Properties["url"] = urlEntry.Text;
-            }
-            await Application.Current.SavePropertiesAsync();
+            await _configService.Save(emailEntry.Text, urlEntry.Text);
             UserDialogs.Instance.Toast("Uloženo!");
             if (_setup)
             {
