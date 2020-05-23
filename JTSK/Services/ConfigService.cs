@@ -32,7 +32,7 @@ namespace JTSK.Services
 
         public async Task Save(string email, string url)
         {
-            if (!url.Contains("http://") &&s !url.Contains("https://"))
+            if (!url.Contains("http://") && !url.Contains("https://"))
             {
                 url = $"http://{url}";
             }
