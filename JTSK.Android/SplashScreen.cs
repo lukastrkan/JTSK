@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace JTSK.Droid
 {
-    [Activity(Label = "JTSK", Icon = "@mipmap/icon", Theme = "@style/Theme.Splash", MainLauncher = true, NoHistory = true)]
+    [Activity(Label = "JTSK", Icon = "@mipmap/jtsk", Theme = "@style/Theme.Splash", MainLauncher = true, NoHistory = true)]
     public class SplashScreen : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)

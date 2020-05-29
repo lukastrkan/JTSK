@@ -8,43 +8,44 @@ namespace JTSK.Services
 {
     class ConfigService
     {
-        string _path = Path.Combine(FileSystem.AppDataDirectory, "config.json");
-        public ConfigModel Config { get; set; }
+        string _pathUser = Path.Combine(FileSystem.AppDataDirectory, "userconfig.json");
+        public ConfigModel UserConfig { get; set; }
+        public StaticConfig StaticConfig { get; set; }
         public bool Exists { get; set; }
         public ConfigService()
         {
-            if (File.Exists(_path))
+            string json;
+            if (File.Exists(_pathUser))
             {
                 Exists = true;
-                string json;
-                using (StreamReader sr = new StreamReader(_path))
+                using (StreamReader sr = new StreamReader(_pathUser))
                 {
                     json = sr.ReadToEnd();
                 }
-                Config = JsonConvert.DeserializeObject<ConfigModel>(json);
+                UserConfig = JsonConvert.DeserializeObject<ConfigModel>(json);
             }
             else
             {
                 Exists = false;
             }
-        }
-       
-
-        public async Task Save(string email, string url)
-        {
-            if (!url.Contains("http://") && !url.Contains("https://"))
+            using (StreamReader sr = new StreamReader(this.GetType().Assembly.GetManifestResourceStream("JTSK.staticconfig.json")))
             {
-                url = $"http://{url}";
+                json = sr.ReadToEnd();
             }
-            Config = new ConfigModel
+            StaticConfig = JsonConvert.DeserializeObject<StaticConfig>(json);
+        }
+
+
+        public async Task Save(string email)
+        {
+            UserConfig = new ConfigModel
             {
                 Email = email,
-                Url = url
             };
             Exists = true;
-            var json = JsonConvert.SerializeObject(Config);
+            var json = JsonConvert.SerializeObject(UserConfig);
 
-            using (StreamWriter sw = new StreamWriter(_path))
+            using (StreamWriter sw = new StreamWriter(_pathUser))
             {
                 await sw.WriteAsync(json);
             }

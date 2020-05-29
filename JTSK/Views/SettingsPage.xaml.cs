@@ -19,14 +19,13 @@ namespace JTSK.Views
             _setup = setup;
             if (_configService.Exists)
             {
-                emailEntry.Text = _configService.Config.Email;
-                urlEntry.Text = _configService.Config.Url;
+                emailEntry.Text = _configService.UserConfig.Email;
             }
         }
 
         private async void save_Clicked(object sender, EventArgs e)
         {
-            await _configService.Save(emailEntry.Text, urlEntry.Text);
+            await _configService.Save(emailEntry.Text);
             UserDialogs.Instance.Toast("Uloženo!");
             if (_setup)
             {

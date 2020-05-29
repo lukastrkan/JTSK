@@ -4,12 +4,11 @@ using JTSK.Services;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Tiny.RestClient;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -108,11 +107,10 @@ namespace JTSK.Views
                 UserDialogs.Instance.ShowLoading("Převádím...");
                 var cords = App._context.Coordinates.OrderBy(x => x.Id).Select(x => new { x.Display, x.Latitude, x.Longitude }).ToList();
                 string json = JsonConvert.SerializeObject(cords);
-                var client = new TinyRestClient(new HttpClient(), _configService.Config.Url);
-                var response = await client.PostRequest("api.php")
-                    .AddFormParameter("gps", json)
-                    .AddFormParameter("email", _configService.Config.Email)
-                    .ExecuteAsHttpResponseMessageAsync();
+                var client = new RestClient(_configService.StaticConfig.Url);
+                var request = new RestRequest();
+                request.AddParameter("gps", json).AddParameter("email", _configService.UserConfig.Email);
+                var response = await client.ExecutePostAsync(request);
                 UserDialogs.Instance.HideLoading();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -120,7 +118,7 @@ namespace JTSK.Views
                 }
                 else
                 {
-                    UserDialogs.Instance.Toast("Chyba");
+                    UserDialogs.Instance.Toast("Chyba Code");
                 }
             }
             catch (Exception ex)

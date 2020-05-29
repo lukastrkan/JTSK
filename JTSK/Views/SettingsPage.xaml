@@ -12,9 +12,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Email"></Label>
-            <Entry x:Name="emailEntry" Keyboard="Email" Placeholder="Email"></Entry>
-            <Label Text="URL"></Label>
-            <Entry x:Name="urlEntry" Keyboard="Url" Placeholder="URL"></Entry>
+            <Entry x:Name="emailEntry" Keyboard="Email" Placeholder="Email"></Entry>            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
