@@ -52,7 +52,7 @@ namespace JTSK.Views
         //Přidat
         async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
-            var t = await DisplayPromptAsync("Zadejte název", "", "Ok", "Zrušít");
+            var t = await DisplayPromptAsync("Zadejte název", "Souřadnice bude viditelná pod tímto názvem.", "Ok", "Zrušít");
             if (String.IsNullOrEmpty(t) || String.IsNullOrWhiteSpace(t))
             {
                 return;
